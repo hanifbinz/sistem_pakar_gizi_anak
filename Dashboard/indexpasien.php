@@ -1,96 +1,91 @@
-<?php include_once('headerpasien.php');
+<?php 
+include_once('headerpasien.php');
 require_once "../config/config.php";
 ?>
 
 <div class="main-content">
     <section class="section">
-        <div class="section-header text-center">
-            <div class="col-lg-12 col-md-6 col-sm-6 col-12">
-                <h1>Selamat Datang</h1><br>
-                <h1>Di Aplikasi Sistem Pakar Diagnosa Gizi Buruk Pada Balita</h1>
+        <div class="section-header">
+            <h1>Dashboard Beranda</h1>
+        </div>
+        
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="hero bg-primary text-white text-center rounded">
+                    <div class="hero-inner">
+                        <h2>Selamat Datang, <?= $_SESSION['usernamepasien']; ?>!</h2>
+                        <p class="lead">Di Aplikasi Sistem Pakar Diagnosa Gizi Buruk Pada Balita Metode Naive Bayes.</p>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- <div class="section-body">
-            <h2 class="section-title">Selamat Datang Di SISTEM PENDUKUNG KEPUTUSAN</h2>
-            <p class="section-lead">
-                Welcome to DECISION SUPPORT SYSTEM
-            </p> -->
+
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                <div class="card card-statistic-1">
+                <div class="card card-statistic-1 shadow-sm">
                     <div class="card-icon bg-primary">
-                        <i class="far fa-user"></i>
+                        <i class="fas fa-child"></i> 
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-
                             <h4 class="text-primary">GIZI BURUK</h4>
-                            <span>Gizi buruk adalah suatu keadaan kekurangan konsumsi zat gizi yang disebabkan oleh rendahnya konsumsi energi protein dalam makanan sehari-hari, yang ditandai dengan berat dan tinggi badan tidak sesuai umur (dibawah rata-rata) dan harus ditetapkan oleh tenaga medis.</span>
                         </div>
-                        <div class="card-body">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                <div class="card card-statistic-1">
-                    <div class="card-icon bg-primary">
-                        <i class="far fa-newspaper"></i>
-                    </div>
-                    <div class="card-wrap">
-                        <div class="card-header">
-
-                            <h4 class="text-primary">Navie Bayes</h4>
-                            <span>Naive Bayes classifier merupakan salah satu metoda pemelajaran mesin yang memanfaatkan perhitungan probabilitas dan statistik yang dikemukakan oleh ilmuwan Inggris Thomas Bayes</span>
-                        </div>
-                        <div class="card-body">
+                        <div class="card-body mt-2 mb-3" style="font-size: 13px; line-height: 1.6; font-weight: 500;">
+                            Gizi buruk adalah keadaan kekurangan konsumsi zat gizi yang disebabkan oleh rendahnya konsumsi energi protein dalam makanan sehari-hari, ditandai dengan berat dan tinggi badan tidak sesuai umur.
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                <div class="card card-statistic-1">
+                <div class="card card-statistic-1 shadow-sm">
                     <div class="card-icon bg-primary">
-                        <i class="far fa-file"></i>
+                        <i class="fas fa-brain"></i> 
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4 class="text-primary">Gejala</h4>
-                            <span>Gejala yang sering dialami pasien yang nantinya akan mengetahui diagnosa gizi buruk apa yang dialaminya</span><br>
+                            <h4 class="text-primary">NAIVE BAYES</h4>
                         </div>
-                        <div class="card-body">
-
+                        <div class="card-body mt-2 mb-3" style="font-size: 13px; line-height: 1.6; font-weight: 500;">
+                            Naive Bayes classifier merupakan salah satu metode pembelajaran mesin yang memanfaatkan perhitungan probabilitas dan statistik yang dikemukakan oleh ilmuwan Inggris Thomas Bayes.
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                <div class="card card-statistic-1">
+                <div class="card card-statistic-1 shadow-sm">
                     <div class="card-icon bg-primary">
-                        <i class="fas fa-circle"></i>
+                        <i class="fas fa-notes-medical"></i> 
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4 class="text-primary">Tentang</h4>
-                            <span>Tentang Aplikasi ini adalah untuk mengetahui diagnosis gizi buruk sesuai gejala yang dialami pasien Dengan Menggunakan metode Navis Bayes</span>
+                            <h4 class="text-primary">DATA GEJALA</h4>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body mt-2 mb-3" style="font-size: 13px; line-height: 1.6; font-weight: 500;">
+                            Gejala yang sering dialami pasien akan diproses di dalam sistem ini untuk mendeteksi dan mengetahui diagnosa tingkat gizi buruk apa yang dialami secara akurat.
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="card card-statistic-1 shadow-sm">
+                    <div class="card-icon bg-primary">
+                        <i class="fas fa-info-circle"></i> 
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4 class="text-primary">TENTANG SISTEM</h4>
+                        </div>
+                        <div class="card-body mt-2 mb-3" style="font-size: 13px; line-height: 1.6; font-weight: 500;">
+                            Aplikasi ini dikembangkan untuk membantu tenaga medis maupun orang tua mendeteksi dini penyakit gizi buruk pada balita dengan menggunakan algoritma probabilitas pakar.
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
-
-
-
     </section>
 </div>
-</body>
 
-</html>
-
-<?php include_once('footer.php');
+<?php include_once('footer.php'); ?>

@@ -1,6 +1,6 @@
 <?php
 require_once "../config/config.php";
-
+/** @var mysqli $con */
 // Redirect jika sudah login
 if (isset($_SESSION['username'])) {
     echo "<script>window.location='../dashboard/index.php';</script>";
@@ -19,32 +19,62 @@ if (isset($_SESSION['username'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <style>
-        /* Tema Terang & Ungu (Matching dengan Dashboard Stisla) */
+        /* Tema Stisla - Biru */
         body {
-            background-color: #f4f6f9; /* Background abu-abu muda */
-            height: 100vh;
+            background-color: #f4f6f9; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
+            min-height: 100vh;
+            position: relative;
         }
+        
+        /* Header Background ala Dashboard */
+        .navbar-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 300px;
+            background-color: #007bff; /* Warna Biru Dashboard */
+            z-index: 0;
+        }
+        
+        /* Judul Web di atas */
+        .header-title {
+            position: absolute;
+            top: 60px;
+            width: 100%;
+            text-align: center;
+            color: #ffffff;
+            z-index: 1;
+        }
+        .header-title h3 {
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        /* Kartu Login */
         .login-card {
-            background: #ffffff; /* Kartu warna putih */
-            border-top: 5px solid #6777ef; /* Aksen garis ungu di atas */
+            background: #ffffff; 
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Bayangan lembut */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
             padding: 40px 35px;
             width: 100%;
             max-width: 420px;
+            z-index: 2;
+            margin-top: 80px; /* Memberi jarak dari header */
         }
         .login-title {
-            color: #6777ef; /* Teks warna ungu */
+            color: #007bff;
             text-align: center;
             font-weight: 700;
             margin-bottom: 5px;
-            font-size: 24px;
-            letter-spacing: 1px;
+            font-size: 22px;
         }
         .login-subtitle {
             color: #6c757d;
@@ -62,28 +92,25 @@ if (isset($_SESSION['username'])) {
             background-color: #f8f9fa;
             border: 1px solid #e4e6fc;
             border-right: none;
-            color: #6777ef; /* Ikon warna ungu */
+            color: #007bff; 
         }
         .form-control {
             background-color: #fdfdff;
             border: 1px solid #e4e6fc;
             border-left: none;
             color: #495057;
-            height: 48px; /* Mengatasi input box kepotong */
+            height: 48px;
         }
         .form-control:focus {
             background-color: #ffffff;
             color: #495057;
-            border-color: #6777ef;
-            box-shadow: 0 0 8px rgba(103, 119, 239, 0.2); /* Efek fokus ungu */
-        }
-        .form-control::placeholder {
-            color: #a1a8ae;
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
         }
         
-        /* Tombol Ungu */
+        /* Tombol */
         .btn-custom {
-            background-color: #6777ef;
+            background-color: #007bff;
             color: #ffffff;
             border: none;
             border-radius: 4px;
@@ -93,13 +120,13 @@ if (isset($_SESSION['username'])) {
             width: 100%;
             transition: all 0.3s ease;
             margin-top: 20px;
-            box-shadow: 0 4px 8px rgba(103, 119, 239, 0.3);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
             cursor: pointer;
         }
         .btn-custom:hover {
-            background-color: #394eea;
+            background-color: #0056b3;
             color: #ffffff;
-            box-shadow: 0 6px 12px rgba(103, 119, 239, 0.4);
+            box-shadow: 0 6px 12px rgba(0, 123, 255, 0.4);
             transform: translateY(-1px);
         }
         .link-pasien {
@@ -112,7 +139,7 @@ if (isset($_SESSION['username'])) {
             transition: 0.3s;
         }
         .link-pasien:hover {
-            color: #6777ef;
+            color: #007bff;
             text-decoration: none;
         }
         .alert-custom {
@@ -128,12 +155,18 @@ if (isset($_SESSION['username'])) {
 </head>
 <body>
 
+    <div class="navbar-bg"></div>
+
+    <div class="header-title">
+        <h3>Sistem Pakar Gizi Buruk</h3>
+    </div>
+
     <div class="login-card">
         <h2 class="login-title">LOGIN ADMIN</h2>
-        <p class="login-subtitle">Sistem Pakar Gizi Buruk</p>
+        <p class="login-subtitle">Silakan masuk untuk mengelola data</p>
 
         <?php
-        // Logika Login
+        // Logika Login Admin
         if (isset($_POST['login'])) {
             $user = trim(mysqli_real_escape_string($con, $_POST['username']));
             $pass = trim(mysqli_real_escape_string($con, $_POST['password']));
@@ -180,7 +213,7 @@ if (isset($_SESSION['username'])) {
             </button>
             
             <a href="loginpasien.php" class="link-pasien">
-                Bukan Admin? <b style="color:#6777ef;">Login sebagai Pasien</b>
+                Bukan Admin? <b style="color:#007bff;">Login sebagai Pasien</b>
             </a>
         </form>
     </div>

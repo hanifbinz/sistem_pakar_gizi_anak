@@ -1,4 +1,5 @@
-<?php include_once('headerpasien.php');
+<?php 
+include_once('headerpasien.php');
 require_once "../config/config.php";
 /** @var mysqli $con */
 ?>
@@ -13,7 +14,7 @@ require_once "../config/config.php";
             <div class="col-12">
                 <div class="card shadow-sm border-0">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">Data Diri Anda</h4>
+                        <h4 class="mb-0 text-primary">Data Diri Anda</h4>
                     </div>
 
                     <div class="card-body">
@@ -22,11 +23,11 @@ require_once "../config/config.php";
                                 <thead class="bg-light">
                                     <tr>
                                         <th width="5%">No</th>
-                                        <th>Nama Pasien</th>
+                                        <th>Nama Lengkap</th>
                                         <th>Username</th>
                                         <th>Jenis Kelamin</th>
                                         <th>Usia</th>
-                                        <th width="10%" class="text-center">Aksi</th>
+                                        <th width="15%" class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -44,7 +45,7 @@ require_once "../config/config.php";
                                                 <td><?= $row['jk'] ?></td>
                                                 <td><?= $row['usia'] ?></td>
                                                 <td class="text-center">
-                                                    <a href="editpasien.php?id=<?= $row['id_pasien'] ?>" class="btn btn-primary btn-sm" title="Edit Profil"><i class="fas fa-pencil-alt"></i></a>
+                                                    <a href="editpasien.php?id=<?= $row['id_pasien'] ?>" class="btn btn-primary btn-sm" title="Edit Profil"><i class="fas fa-pencil-alt mr-1"></i> Edit</a>
                                                 </td>
                                             </tr>
                                     <?php
@@ -63,10 +64,10 @@ require_once "../config/config.php";
     </section>
 </div>
 
+<?php include_once('footer.php'); ?>
+
 <script>
     $(document).ready(function() {
         if ($('.admin').length > 0) { $('.admin').DataTable(); }
     });
 </script>
-
-<?php include_once('footer.php'); ?>
