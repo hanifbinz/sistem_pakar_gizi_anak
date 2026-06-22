@@ -4,9 +4,6 @@ require_once "../config/config.php";
 /** @var mysqli $con */
 ?>
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
-
 <div class="main-content">
     <section class="section">
         <div class="section-header">
@@ -16,8 +13,8 @@ require_once "../config/config.php";
         <div class="row">
             <div class="col-12">
                 <div class="card shadow-sm border-0">
-                    <div class="card-header">
-                        <h4 class="mb-0">Daftar Indikasi Gejala Gizi Buruk</h4>
+                    <div class="card-header border-bottom">
+                        <h4 class="mb-0 text-primary">Daftar Indikasi Gejala Gizi Buruk</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -57,13 +54,13 @@ require_once "../config/config.php";
     </section>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+<?php include_once('footer.php'); ?>
+
 <script>
+    // DataTable akan berjalan otomatis karena library sudah dipanggil di footer.php
     $(document).ready(function() {
-        if ($('.admin').length > 0) { $('.admin').DataTable(); }
+        if ($('.admin').length > 0) { 
+            $('.admin').DataTable(); 
+        }
     });
 </script>
-
-<?php include_once('footer.php'); ?>
