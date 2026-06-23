@@ -11,9 +11,9 @@ require_once "../config/config.php";
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
         @media print {
-            .no-print { display: none; }
+            .no-print { display: none !important; }
         }
-        body { color: black; background: white; padding: 20px; }
+        body { color: black; background: white; padding: 20px; font-family: Arial, sans-serif; }
         .table th { background-color: #f8f9fa !important; }
     </style>
 </head>
@@ -43,9 +43,9 @@ require_once "../config/config.php";
                 ?>
                         <tr>
                             <td class="text-center"><?= $no++ ?></td>
-                            <td><?= $row['namapasien'] ?></td>
-                            <td class="text-center"><?= $row['jeniskelamin'] ?></td>
-                            <td><?= $row['hasildiagnosa'] ?></td>
+                            <td><?= htmlspecialchars($row['namapasien']) ?></td>
+                            <td class="text-center"><?= htmlspecialchars($row['jeniskelamin']) ?></td>
+                            <td><?= htmlspecialchars($row['hasildiagnosa']) ?></td>
                         </tr>
                 <?php
                     }
@@ -56,19 +56,23 @@ require_once "../config/config.php";
             </tbody>
         </table>
 
-        <div class="text-right mt-5">
-            <p>Dicetak pada: <?= date('d-m-Y H:i') ?></p>
-            <br><br><br>
-            <p>( ....................................... )</p>
+        <div class="row mt-5">
+            <div class="col-8"></div>
+            <div class="col-4 text-center">
+                <p>Dicetak pada: <?= date('d-m-Y') ?></p>
+                <br><br><br>
+                <p class="font-weight-bold">( ....................................... )</p>
+                <p>Petugas / Admin</p>
+            </div>
         </div>
 
         <div class="text-center mt-4 no-print">
-            <button onclick="window.print()" class="btn btn-primary btn-lg">Print Sekarang</button>
+            <button onclick="window.print()" class="btn btn-primary btn-lg"><i class="fas fa-print"></i> Print Sekarang</button>
+            <button onclick="window.close()" class="btn btn-secondary btn-lg">Tutup</button>
         </div>
     </div>
     
     <script>
-        // Otomatis print saat halaman dimuat
         window.onload = function() { window.print(); }
     </script>
 </body>

@@ -13,7 +13,7 @@ if (isset($_POST['submit'])) {
 
     echo "<script>
         document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({ icon: 'success', title: 'Berhasil!', text: 'Data berhasil diupdate.', showConfirmButton: false, timer: 1500 })
+            Swal.fire({ icon: 'success', title: 'Berhasil!', text: 'Data penyakit berhasil diupdate.', showConfirmButton: false, timer: 1500 })
             .then(() => { window.location.replace('index.php'); });
         });
     </script>";
@@ -44,7 +44,7 @@ $row = mysqli_fetch_array($SqlQuery);
                             </div>
                             <div class="form-group">
                                 <label class="font-weight-bold">Solusi / Penanganan</label>
-                                <textarea class="form-control" name="solusi" required rows="8" style="height:100%;"><?= htmlspecialchars($row['solusi']) ?></textarea>
+                                <textarea class="form-control" name="solusi" required rows="6" style="height:100%;"><?= htmlspecialchars($row['solusi']) ?></textarea>
                             </div>
                             <div class="text-right mt-4 pt-3 border-top">
                                 <button class="btn btn-secondary mr-2" type="reset">Reset</button>

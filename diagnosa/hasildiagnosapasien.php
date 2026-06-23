@@ -2,9 +2,10 @@
 include_once('headerpasien.php');
 require_once "../config/config.php";
 /** @var mysqli $con */
+
 // Validasi jika gejala kosong
 if (isset($_POST['submit']) && empty($_POST['gejala'])) {
-    echo "<script>alert('Harap pilih minimal satu gejala!'); window.location.href='indexpasien.php';</script>";
+    echo "<script>alert('Harap pilih minimal satu gejala!'); window.location.replace('indexpasien.php');</script>";
     exit;
 }
 
@@ -26,11 +27,12 @@ if (isset($_POST['submit'])) {
     while ($row = mysqli_fetch_array($SqlQuery)) {
         $id = $row['id_penyakit'];
         
-        foreach ($_POST['gejala'] as $value) {
+        foreach ($_POST['gejala'] as $id_gejala_dipilih) {
             $nilaigejala = 0;
-            $Sqlpenyakit1 = mysqli_query($con, "SELECT * FROM gejala INNER JOIN penyakit p ON gejala.id_penyakit=p.id_penyakit WHERE p.id_penyakit='$id'");
+            $Sqlpenyakit1 = mysqli_query($con, "SELECT gejala.id_gejala FROM gejala INNER JOIN penyakit p ON gejala.id_penyakit=p.id_penyakit WHERE p.id_penyakit='$id'");
             while ($rowgejala = mysqli_fetch_array($Sqlpenyakit1)) {
-                if ($value == $rowgejala['nama_gejala']) {
+                // PERBAIKAN PENTING: Mencocokkan berdasarkan ID Gejala
+                if ($id_gejala_dipilih == $rowgejala['id_gejala']) {
                     $nilaigejala = 1;
                     break;
                 }
@@ -72,13 +74,13 @@ if (isset($_POST['submit'])) {
             $nilaiAkhir = !empty($rowFinal['nilai_akhir']) ? $rowFinal['nilai_akhir'] : "0";
             
             $namapasien = mysqli_real_escape_string($con, $_POST['namapasien']);
-            $jk = $_POST['jk'];
+            $jk = mysqli_real_escape_string($con, $_POST['jk']);
             ?>
             <div class="col-12">
                 <div class="card bg-primary text-white text-center shadow-sm">
                     <div class="card-body">
                         <h5>Kemungkinan Terbesar Anak Anda Mengalami:</h5>
-                        <h2 class="font-weight-bold text-warning"><?= $penyakitTerdeteksi ?></h2>
+                        <h2 class="font-weight-bold text-warning"><?= htmlspecialchars($penyakitTerdeteksi) ?></h2>
                     </div>
                 </div>
             </div>
@@ -92,28 +94,33 @@ if (isset($_POST['submit'])) {
                         <form action="../hasil/indexpasien.php" method="GET">
                             <div class="form-group">
                                 <label class="font-weight-bold">Nama Pasien</label>
-                                <input type="text" class="form-control" name="pasien" value="<?= $namapasien ?>" readonly>
+                                <input type="text" class="form-control" name="pasien" value="<?= htmlspecialchars($namapasien) ?>" readonly>
                             </div>
                             <div class="form-group">
                                 <label class="font-weight-bold">Jenis Kelamin</label>
-                                <input type="text" class="form-control" name="jk" value="<?= $jk ?>" readonly>
+                                <input type="text" class="form-control" name="jk" value="<?= htmlspecialchars($jk) ?>" readonly>
                             </div>
                             <div class="form-group">
-                                <label class="font-weight-bold">Hasil Nilai</label>
-                                <input type="text" class="form-control" name="nilai_akhir" value="<?= $nilaiAkhir ?>" readonly>
+                                <label class="font-weight-bold">Hasil Nilai Kalkulasi</label>
+                                <input type="text" class="form-control" name="nilai_akhir" value="<?= htmlspecialchars($nilaiAkhir) ?>" readonly>
                             </div>
                             <div class="form-group">
                                 <label class="font-weight-bold">Penyakit Terdeteksi</label>
-                                <input type="text" class="form-control" name="penyakit" value="<?= $penyakitTerdeteksi ?>" readonly>
+                                <input type="text" class="form-control" name="penyakit" value="<?= htmlspecialchars($penyakitTerdeteksi) ?>" readonly>
                             </div>
                             <div class="form-group">
                                 <label class="font-weight-bold">Gejala yang Dipilih</label>
                                 <div class="bg-light p-3 rounded border">
                                     <?php
                                     $no = 1;
-                                    foreach ($_POST['gejala'] as $value) {
-                                        echo "<div class='mb-1'>{$no}. {$value}</div>";
-                                        $no++;
+                                    foreach ($_POST['gejala'] as $id_gejala) {
+                                        // QUERY UNTUK MENGAMBIL NAMA GEJALA BERDASARKAN ID
+                                        $id_gejala_safe = mysqli_real_escape_string($con, $id_gejala);
+                                        $q_nama = mysqli_query($con, "SELECT nama_gejala FROM gejala WHERE id_gejala = '$id_gejala_safe'");
+                                        if($d_nama = mysqli_fetch_array($q_nama)){
+                                            echo "<div class='mb-1'>{$no}. {$d_nama['nama_gejala']}</div>";
+                                            $no++;
+                                        }
                                     }
                                     ?>
                                 </div>
@@ -133,16 +140,16 @@ if (isset($_POST['submit'])) {
                     </div>
                     <div class="card-body text-center">
                         <?php if ($penyakitTerdeteksi == 'Kwarshiorkor') { ?>
-                            <img class="img-fluid rounded shadow-sm mb-3" src="<?= base_url() ?>/img/slide2.jpg" style="max-height: 250px;">
+                            <img class="img-fluid rounded shadow-sm mb-3" src="<?= base_url() ?>/img/slide2.jpg" style="max-height: 250px; object-fit:cover;">
                         <?php } else if ($penyakitTerdeteksi == 'Marasmik-Kwarshiorkor') { ?>
-                            <img class="img-fluid rounded shadow-sm mb-3" src="<?= base_url() ?>/img/slide3.jpg" style="max-height: 250px;">
+                            <img class="img-fluid rounded shadow-sm mb-3" src="<?= base_url() ?>/img/slide3.jpg" style="max-height: 250px; object-fit:cover;">
                         <?php } else if (!empty($rowFinal['nilai_akhir'])) { ?>
-                            <img class="img-fluid rounded shadow-sm mb-3" src="<?= base_url() ?>/img/slide1.jpg" style="max-height: 250px;">
+                            <img class="img-fluid rounded shadow-sm mb-3" src="<?= base_url() ?>/img/slide1.jpg" style="max-height: 250px; object-fit:cover;">
                         <?php } ?>
                         
-                        <div class="alert alert-warning text-left">
+                        <div class="alert alert-warning text-left mt-3">
                             <strong>Solusi Medis:</strong><br>
-                            <?= $solusiTerdeteksi ?>
+                            <?= nl2br(htmlspecialchars($solusiTerdeteksi)) ?>
                         </div>
                     </div>
                 </div>

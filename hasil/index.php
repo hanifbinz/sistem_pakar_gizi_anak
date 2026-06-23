@@ -2,20 +2,19 @@
 include_once('header.php');
 require_once "../config/config.php";
 /** @var mysqli $con */
+
 // PROSES SIMPAN HASIL DIAGNOSA
 if (isset($_GET['tambah'])) {
     $namapasien = mysqli_real_escape_string($con, $_GET['pasien']);
     $jk = mysqli_real_escape_string($con, $_GET['jk']);
     $penyakit = mysqli_real_escape_string($con, $_GET['penyakit']);
 
-    $sql = mysqli_query($con, "SELECT * FROM `nilai_akhir` INNER JOIN penyakit as p ON nilai_akhir.id_penyakit=P.id_penyakit ORDER BY nilai_akhir DESC LIMIT 1");
+    $sql = mysqli_query($con, "SELECT * FROM `nilai_akhir` INNER JOIN penyakit as p ON nilai_akhir.id_penyakit=p.id_penyakit ORDER BY nilai_akhir DESC LIMIT 1");
     $row = mysqli_fetch_array($sql);
-    
     $id = isset($row['id_penyakit']) ? $row['id_penyakit'] : 0;
 
-    $save = mysqli_query($con, "INSERT INTO hasil (id_penyakit, namapasien, jeniskelamin, hasildiagnosa) VALUES ('$id', '$namapasien', '$jk', '$penyakit' )") or die(mysqli_error($con));
+    mysqli_query($con, "INSERT INTO hasil (id_penyakit, namapasien, jeniskelamin, hasildiagnosa) VALUES ('$id', '$namapasien', '$jk', '$penyakit')") or die(mysqli_error($con));
 
-    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
     echo "<script>
         document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({ 
@@ -25,16 +24,12 @@ if (isset($_GET['tambah'])) {
                 timer: 2000,
                 showConfirmButton: false 
             }).then(() => { 
-                window.location.href = 'index.php'; 
+                window.location.replace('index.php'); 
             });
         });
     </script>";
 }
 ?>
-
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <div class="main-content">
     <section class="section">
@@ -44,8 +39,8 @@ if (isset($_GET['tambah'])) {
         <div class="row">
             <div class="col-12">
                 <div class="card shadow-sm border-0">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">Daftar Hasil Diagnosa Pasien</h4>
+                    <div class="card-header d-flex justify-content-between align-items-center border-bottom">
+                        <h4 class="mb-0 text-primary">Daftar Hasil Diagnosa Pasien</h4>
                         <a href="cetak.php" target="_blank" class="btn btn-success"><i class="fas fa-print mr-1"></i> Cetak Laporan</a>
                     </div>
 
@@ -70,8 +65,8 @@ if (isset($_GET['tambah'])) {
                                     ?>
                                             <tr>
                                                 <td><?= $no++ ?></td>
-                                                <td class="font-weight-bold text-primary"><?= $row['namapasien'] ?></td>
-                                                <td><?= $row['jeniskelamin'] ?></td>
+                                                <td class="font-weight-bold text-dark"><?= htmlspecialchars($row['namapasien']) ?></td>
+                                                <td><?= htmlspecialchars($row['jeniskelamin']) ?></td>
                                                 <td>
                                                     <?php 
                                                     if($row['hasildiagnosa'] == 'Tidak Terjangkit' || $row['hasildiagnosa'] == 'Tidak Terdeteksi Gizi Buruk') {
@@ -101,10 +96,8 @@ if (isset($_GET['tambah'])) {
     </section>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+<?php include_once('footer.php'); ?>
+
 <script>
     $(document).ready(function() {
         if ($('.admin').length > 0) { $('.admin').DataTable(); }
@@ -126,5 +119,3 @@ if (isset($_GET['tambah'])) {
         });
     });
 </script>
-
-<?php include_once('footer.php'); ?>

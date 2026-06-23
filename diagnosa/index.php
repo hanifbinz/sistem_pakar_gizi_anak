@@ -4,14 +4,12 @@ require_once "../config/config.php";
 /** @var mysqli $con */
 ?>
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
 <div class="main-content">
     <section class="section">
         <div class="section-header">
             <h1>Halaman Diagnosa</h1>
         </div>
+
         <div class="row">
             <div class="col-12 col-md-8 col-lg-6 mx-auto">
                 <div class="card shadow-sm border-0">
@@ -32,6 +30,7 @@ require_once "../config/config.php";
                                     ?>
                                 </select>
                             </div>
+
                             <div class="form-group">
                                 <label class="font-weight-bold">Jenis Kelamin</label>
                                 <select class="custom-select form-control" name="jk" required>
@@ -40,18 +39,19 @@ require_once "../config/config.php";
                                     <option value="Perempuan">Perempuan</option>
                                 </select>
                             </div>
+
                             <div class="form-group">
                                 <label class="font-weight-bold">Pilih Gejala Yang Dialami</label>
-                                <div class="border p-3 rounded" style="max-height: 300px; overflow-y: auto;">
+                                <div class="border p-3 rounded bg-light" style="max-height: 300px; overflow-y: auto;">
                                     <?php
                                     $sql = mysqli_query($con, "SELECT * FROM gejala");
                                     if(mysqli_num_rows($sql) > 0){
                                         while ($data = mysqli_fetch_array($sql)) {
                                     ?>
-                                        <div class="custom-control custom-checkbox mb-2">
-                                            <input type="checkbox" class="custom-control-input" id="gejala_<?= $data['id_gejala'] ?>" name="gejala[]" value="<?= $data['nama_gejala'] ?>">
-                                            <label class="custom-control-label" style="line-height: 24px;" for="gejala_<?= $data['id_gejala'] ?>"><?= $data['nama_gejala'] ?></label>
-                                        </div>
+                                            <div class="custom-control custom-checkbox mb-2">
+                                                <input type="checkbox" class="custom-control-input" id="gejala_<?= $data['id_gejala'] ?>" name="gejala[]" value="<?= $data['id_gejala'] ?>">
+                                                <label class="custom-control-label" style="cursor:pointer;" for="gejala_<?= $data['id_gejala'] ?>"><?= $data['nama_gejala'] ?></label>
+                                            </div>
                                     <?php
                                         }
                                     } else {
@@ -59,9 +59,11 @@ require_once "../config/config.php";
                                     }
                                     ?>
                                 </div>
+                                <small class="text-muted">* Centang semua gejala yang dialami.</small>
                             </div>
+
                             <div class="text-right mt-4">
-                                <button class="btn btn-primary btn-lg" type="submit" name="submit">
+                                <button class="btn btn-primary btn-lg px-4" type="submit" name="submit">
                                     <i class="fas fa-search-plus mr-1"></i> Proses Diagnosa
                                 </button>
                             </div>

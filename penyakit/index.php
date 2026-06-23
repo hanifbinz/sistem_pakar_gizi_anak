@@ -2,11 +2,31 @@
 include_once('header.php');
 require_once "../config/config.php";
 /** @var mysqli $con */
-?>
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+// PROSES TAMBAH DATA PENYAKIT
+if (isset($_POST['submit'])) {
+    $namapenyakit = mysqli_real_escape_string($con, $_POST['namapenyakit']);
+    $solusi       = mysqli_real_escape_string($con, $_POST['solusi']);
+    
+    $sql = mysqli_query($con, "SELECT * FROM penyakit WHERE nama_penyakit ='$namapenyakit'");
+    if (mysqli_num_rows($sql) > 0) {
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({ icon: 'warning', title: 'Maaf!', text: 'Data penyakit sudah ada.', showConfirmButton: false, timer: 3000 })
+                .then(() => { window.location.replace('index.php'); });
+            });
+        </script>";
+    } else {
+        mysqli_query($con, "INSERT INTO penyakit (nama_penyakit, solusi) VALUES ('$namapenyakit', '$solusi')") or die(mysqli_error($con));
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({ icon: 'success', title: 'Berhasil!', text: 'Data penyakit berhasil disimpan.', showConfirmButton: false, timer: 2000 })
+                .then(() => { window.location.replace('index.php'); });
+            });
+        </script>";
+    }
+}
+?>
 
 <div class="main-content">
     <section class="section">
@@ -18,8 +38,8 @@ require_once "../config/config.php";
             <div class="col-12">
                 <div class="card shadow-sm border-0">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">Daftar Penyakit (Gizi Buruk)</h4>
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus mr-1"></i> Tambah Penyakit</button>
+                        <h4 class="mb-0 text-primary">Daftar Penyakit (Gizi Buruk)</h4>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#modalTambah"><i class="fas fa-plus mr-1"></i> Tambah Penyakit</button>
                     </div>
 
                     <div class="card-body">
@@ -35,15 +55,15 @@ require_once "../config/config.php";
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $SqlQuery = mysqli_query($con, "SELECT * FROM penyakit");
+                                    $SqlQuery = mysqli_query($con, "SELECT * FROM penyakit ORDER BY id_penyakit DESC");
                                     $no = 1;
                                     if (mysqli_num_rows($SqlQuery) > 0) {
                                         while ($row = mysqli_fetch_array($SqlQuery)) {
                                     ?>
                                             <tr>
                                                 <td><?= $no++ ?></td>
-                                                <td class="font-weight-bold text-dark"><?= $row['nama_penyakit'] ?></td>
-                                                <td><?= $row['solusi'] ?></td>
+                                                <td class="font-weight-bold text-dark"><?= htmlspecialchars($row['nama_penyakit']) ?></td>
+                                                <td><?= nl2br(htmlspecialchars($row['solusi'])) ?></td>
                                                 <td class="text-center">
                                                     <a href="edit.php?id=<?= $row['id_penyakit'] ?>" class="btn btn-primary btn-sm mr-1" title="Edit Data">
                                                         <i class="fas fa-edit"></i>
@@ -69,7 +89,7 @@ require_once "../config/config.php";
     </section>
 </div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="modalTambah" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content border-0 shadow">
             <div class="modal-header border-bottom">
@@ -98,38 +118,7 @@ require_once "../config/config.php";
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
-
-<?php
-if (isset($_POST['submit'])) {
-    $namapenyakit = mysqli_real_escape_string($con, $_POST['namapenyakit']);
-    $solusi       = mysqli_real_escape_string($con, $_POST['solusi']);
-    
-    $sql = mysqli_query($con, "SELECT * FROM penyakit WHERE nama_penyakit ='$namapenyakit'");
-    if (mysqli_num_rows($sql) > 0) {
-        echo "<script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({ icon: 'warning', title: 'Maaf!', text: 'Data penyakit sudah ada.', showConfirmButton: false, timer: 3000 })
-                .then(() => { window.location.href = window.location.href; });
-            });
-        </script>";
-    } else {
-        mysqli_query($con, "INSERT INTO penyakit (nama_penyakit, solusi) VALUES ('$namapenyakit', '$solusi')") or die(mysqli_error($con));
-        echo "<script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({ icon: 'success', title: 'Berhasil!', text: 'Data penyakit berhasil disimpan.', showConfirmButton: false, timer: 2000 })
-                .then(() => { window.location.href = window.location.href; });
-            });
-        </script>";
-    }
-}
-include_once('footer.php'); 
-?>
+<?php include_once('footer.php'); ?>
 
 <script>
     $(document).ready(function() {
@@ -148,7 +137,7 @@ include_once('footer.php');
                 confirmButtonText: 'Ya, Hapus!'
             }).then((result) => {
                 if (result.isConfirmed) { window.location.href = getLink; }
-            })
+            });
         });
     });
 </script>
